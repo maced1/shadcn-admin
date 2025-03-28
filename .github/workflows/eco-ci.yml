@@ -52,9 +52,17 @@ jobs:
           label: 'python setup'
         continue-on-error: true # recommended setting for production. See notes below.
 
+      - name: Lint the code
+        run: pnpm lint
 
-      - name: Run tests
-        run: pnpm run test:ui
+      - name: Analyze unused files and dependencies
+        run: pnpm knip --no-exit-code
+
+      - name: Run Prettier check
+        run: pnpm format:check
+
+      - name: Build the project
+        run: pnpm build
 
       - name: Tests measurement
         uses: green-coding-solutions/eco-ci-energy-estimation@v4 # use hash or @vX here (See note below)
