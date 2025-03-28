@@ -32,7 +32,7 @@ jobs:
         run: pnpm lint
 
       - name: Analyze unused files and dependencies
-        run: pnpm knip —no-exit-code
+        run: pnpm knip --no-exit-code
 
       - name: Run Prettier check
         run: pnpm format:check
