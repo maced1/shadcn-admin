@@ -1,0 +1,75 @@
+name: Daily Tests with Energy Measurement
+run-name: Scheduled - DEV Branch
+on:
+  push:
+    branches:
+      - ${{ github.ref_name }}
+
+permissions:
+  read-all
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start Measurement
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4 # use hash or @vX here (See note below)
+        with:
+          task: start-measurement
+        # continue-on-error: true # recommended setting for production. See notes below.
+
+
+      - name: 'Checkout repository'
+        uses: actions/checkout@v4
+        with:
+          ref: '${{ github.ref_name }}'
+
+      - name: Checkout Repo Measurement
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4 # use hash or @vX here (See note below)
+        with:
+          task: get-measurement
+          label: 'repo checkout'
+        # continue-on-error: true # recommended setting for production. See notes below.
+
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 9
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: Install deps
+        run: pnpm install -w
+
+      - name: Setup Python Measurment
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4 # use hash or @vX here (See note below)
+        with:
+          task: get-measurement
+          label: 'python setup'
+        continue-on-error: true # recommended setting for production. See notes below.
+
+      - name: Install & Build
+        run: pnpm install
+      - name: Publint
+        run: pnpm publint:all
+      - name: Are The Types Wrong
+        run: pnpm attw:all
+      - name: Test
+        run: pnpm test:all --skip-nx-cache
+
+      - name: Tests measurement
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4 # use hash or @vX here (See note below)
+        with:
+          task: get-measurement
+          label: 'pytest'
+        continue-on-error: true # recommended setting for production. See notes below.
+
+      - name: Show Energy Results
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4 # use hash or @vX here (See note below)
+        with:
+          task: display-results
+        continue-on-error: true # recommended setting for production. See notes below.
