@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - feature/set-eco-ci
-
 permissions:
   read-all
 
@@ -43,7 +42,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install deps
-        run: pnpm i
+        run: pnpm install
 
       - name: Setup Python Measurment
         uses: green-coding-solutions/eco-ci-energy-estimation@v4 # use hash or @vX here (See note below)
