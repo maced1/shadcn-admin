@@ -3,7 +3,7 @@ run-name: Scheduled - DEV Branch
 on:
   push:
     branches:
-      - ${{ github.ref_name }}
+      - main
 
 permissions:
   read-all
@@ -22,7 +22,7 @@ jobs:
       - name: 'Checkout repository'
         uses: actions/checkout@v4
         with:
-          ref: '${{ github.ref_name }}'
+          ref: 'main'
 
       - name: Checkout Repo Measurement
         uses: green-coding-solutions/eco-ci-energy-estimation@v4 # use hash or @vX here (See note below)
