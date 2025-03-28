@@ -43,7 +43,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install deps
-        run: pnpm install -w
+        run: pnpm i
 
       - name: Setup Python Measurment
         uses: green-coding-solutions/eco-ci-energy-estimation@v4 # use hash or @vX here (See note below)
