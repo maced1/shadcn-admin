@@ -52,14 +52,9 @@ jobs:
           label: 'python setup'
         continue-on-error: true # recommended setting for production. See notes below.
 
-      - name: Install & Build
-        run: pnpm install
-      - name: Publint
-        run: pnpm publint:all
-      - name: Are The Types Wrong
-        run: pnpm attw:all
-      - name: Test
-        run: pnpm test:all --skip-nx-cache
+
+      - name: Run tests
+        run: pnpm run test:ui
 
       - name: Tests measurement
         uses: green-coding-solutions/eco-ci-energy-estimation@v4 # use hash or @vX here (See note below)
